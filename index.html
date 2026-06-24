@@ -3,158 +3,328 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Floorboards Archive - Day 1,402</title>
+    <title>TERMINAL://FLOORBOARDS_RECOVERY_SYS</title>
     <style>
+        :root {
+            --glow-color: #00ff66;
+            --alert-color: #ff3333;
+            --bg-color: #030704;
+            --terminal-bg: #07130b;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
         body {
-            background-color: #0b0c10;
-            color: #c5a880;
+            background-color: var(--bg-color);
+            color: var(--glow-color);
             font-family: 'Courier New', Courier, monospace;
-            padding: 40px;
-            max-width: 800px;
-            margin: 0 auto;
-            line-height: 1.6;
-        }
-
-        header {
-            border-bottom: 1px dashed #45474a;
-            padding-bottom: 20px;
-            margin-bottom: 40px;
-        }
-
-        h1 {
-            font-size: 1.5rem;
-            color: #660000;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin: 0 0 10px 0;
-        }
-
-        .meta {
-            font-size: 0.85rem;
-            color: #5c6166;
-        }
-
-        main {
-            background-color: #11141a;
-            padding: 30px;
-            border: 1px solid #1f232b;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            margin-bottom: 40px;
-        }
-
-        /* The Cipher Text */
-        /* Regular text elements represent DOTS (.) */
-        /* Bold text elements represent DASHES (-) */
-        p.entry-text {
-            font-size: 1.1rem;
-            color: #a3a8ae;
-            text-align: justify;
-            word-spacing: 2px;
-        }
-
-        /* Password Section */
-        .secure-vault {
-            border: 1px solid #660000;
-            background-color: #1a0d0d;
+            min-height: 100vh;
             padding: 20px;
-            margin-top: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+            position: relative;
         }
 
-        .secure-vault h2 {
-            font-size: 1rem;
-            color: #ff3333;
-            margin-top: 0;
+        /* CRT Scanline and Flicker Effects */
+        body::before {
+            content: " ";
+            display: block;
+            position: fixed;
+            top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            z-index: 9999;
+            background-size: 100% 4px, 3px 100%;
+            pointer-events: none;
+        }
+
+        body::after {
+            content: " ";
+            display: block;
+            position: fixed;
+            top: 0; left: 0; bottom: 0; right: 0;
+            background: rgba(18, 16, 16, 0.1);
+            opacity: 0;
+            z-index: 99999;
+            pointer-events: none;
+            animation: flicker 0.15s infinite;
+        }
+
+        @keyframes flicker {
+            0% { opacity: 0.27861; }
+            5% { opacity: 0.34769; }
+            10% { opacity: 0.23604; }
+            15% { opacity: 0.90626; }
+            20% { opacity: 0.18128; }
+            25% { opacity: 0.83891; }
+            30% { opacity: 0.65583; }
+            35% { opacity: 0.67807; }
+            40% { opacity: 0.26559; }
+            45% { opacity: 0.84693; }
+            50% { opacity: 0.96019; }
+            55% { opacity: 0.13594; }
+            60% { opacity: 0.88013; }
+            65% { opacity: 0.48425; }
+            70% { opacity: 0.16141; }
+            75% { opacity: 0.56508; }
+            80% { opacity: 0.61285; }
+            85% { opacity: 0.71775; }
+            90% { opacity: 0.86574; }
+            95% { opacity: 0.21105; }
+            100% { opacity: 0.56453; }
+        }
+
+        /* Main Terminal Wrapper */
+        .terminal-container {
+            width: 100%;
+            max-width: 900px;
+            background-color: var(--terminal-bg);
+            border: 2px solid var(--glow-color);
+            box-shadow: 0 0 20px rgba(0, 255, 102, 0.2), inset 0 0 15px rgba(0, 255, 102, 0.1);
+            padding: 30px;
+            border-radius: 8px;
+            position: relative;
+        }
+
+        /* Header Style */
+        header {
+            border-bottom: 2px solid var(--glow-color);
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .logo-area h1 {
+            font-size: 1.4rem;
+            letter-spacing: 3px;
             text-transform: uppercase;
+            text-shadow: 0 0 5px var(--glow-color);
+        }
+
+        .sys-status {
+            font-size: 0.8rem;
+            background: rgba(0, 255, 102, 0.1);
+            padding: 4px 10px;
+            border: 1px solid var(--glow-color);
+            text-transform: uppercase;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.6; }
+            50% { opacity: 1; }
+            100% { opacity: 0.6; }
+        }
+
+        /* Console Boot Log Grid */
+        .console-log {
+            font-size: 0.85rem;
+            color: rgba(0, 255, 102, 0.7);
+            margin-bottom: 25px;
+            border-left: 3px solid rgba(0, 255, 102, 0.3);
+            padding-left: 15px;
+        }
+
+        /* The Cipher Content Block */
+        .intercepted-msg-box {
+            background: rgba(0,0,0,0.4);
+            border: 1px dashed var(--glow-color);
+            padding: 20px;
+            border-radius: 4px;
+            margin-bottom: 30px;
+        }
+
+        .intercepted-msg-box h3 {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            color: #fff;
+            letter-spacing: 1px;
+        }
+
+        p.entry-text {
+            font-size: 1.05rem;
+            color: rgba(0, 255, 102, 0.9);
+            text-align: justify;
+            line-height: 1.7;
+        }
+
+        p.entry-text b {
+            color: #ffffff;
+            text-shadow: 0 0 8px #ffffff;
+            font-weight: bold;
+        }
+
+        /* Decryption Interface */
+        .decryption-chamber {
+            border: 2px solid var(--glow-color);
+            background-color: rgba(0, 15, 5, 0.6);
+            padding: 25px;
+            border-radius: 4px;
+            position: relative;
+        }
+
+        .decryption-chamber.error-state {
+            border-color: var(--alert-color);
+        }
+
+        .decryption-chamber h2 {
+            font-size: 1rem;
+            color: #ffffff;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+            flex-wrap: wrap;
         }
 
         input[type="text"] {
-            background-color: #0b0c10;
-            border: 1px solid #45474a;
-            color: #ff3333;
-            padding: 10px;
+            background-color: #000;
+            border: 1px solid var(--glow-color);
+            color: var(--glow-color);
+            padding: 12px;
             font-family: 'Courier New', monospace;
-            width: 70%;
-            max-width: 300px;
+            font-size: 1.1rem;
+            flex: 1;
+            min-width: 200px;
+            outline: none;
+            letter-spacing: 2px;
+            box-shadow: inset 0 0 5px rgba(0,255,102,0.3);
+        }
+
+        input[type="text"]:focus {
+            box-shadow: 0 0 10px var(--glow-color), inset 0 0 5px rgba(0,255,102,0.3);
         }
 
         button {
-            background-color: #660000;
-            color: #ffffff;
+            background-color: var(--glow-color);
+            color: #000;
             border: none;
-            padding: 10px 20px;
+            padding: 0 25px;
             font-family: 'Courier New', monospace;
+            font-size: 1rem;
+            font-weight: bold;
             cursor: pointer;
+            text-transform: uppercase;
+            transition: all 0.2s ease;
+            min-height: 48px;
         }
 
         button:hover {
-            background-color: #990000;
+            background-color: #fff;
+            box-shadow: 0 0 15px #fff;
         }
 
+        #vault-output {
+            margin-top: 20px;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            min-height: 20px;
+        }
+
+        /* Footnotes */
         footer {
             text-align: center;
             font-size: 0.75rem;
-            color: #383c42;
-            margin-top: 60px;
-            border-top: 1px solid #1f232b;
-            padding-top: 20px;
+            color: rgba(0, 255, 102, 0.4);
+            margin-top: 30px;
+            border-top: 1px solid rgba(0, 255, 102, 0.2);
+            padding-top: 15px;
         }
 
         .hidden-hint {
-            color: #11141a; /* Matches background to stay hidden unless highlighted */
+            color: var(--terminal-bg);
             user-select: none;
+            display: block;
+            margin: 15px 0;
+            font-size: 0.8rem;
+            text-align: center;
+        }
+        
+        .hidden-hint::selection {
+            background: var(--glow-color);
+            color: #000;
         }
     </style>
 </head>
 <body>
 
-    <header>
-        <h1>FLOORBOARDS_ARCHIVE_07</h1>
-        <div class="meta">SYSTEM STATUS: UNATTENDED // LAST LOGIN: 274 DAYS AGO // ARCHIVIST ID: #4902</div>
-    </header>
+    <div class="terminal-container">
+        <header>
+            <div class="logo-area">
+                <h1>Floorboards_OS v4.92</h1>
+            </div>
+            <div class="sys-status">▲ TERMINAL INTRUSION DETECTED</div>
+        </header>
 
-    <main>
-        <div class="meta" style="margin-bottom: 15px;">POSTED: Day 1,402 - Maintenance Completed</div>
-        
-        <!-- The cipher is embedded directly into the font styles below -->
-        <p class="entry-text">
-            <b>T</b>he old <b>h</b>ous<b>e</b> breathes differently <b>n</b>ow th<b>a</b>t the b<b>a</b>s<b>e</b>m<b>e</b>nt door <b>i</b>s loc<b>k</b>ed fr<b>o</b>m <b>t</b>he outsid<b>e</b>. R<b>a</b>in str<b>e</b>aks th<b>e</b> grime <b>o</b>n th<b>e</b> windows, bl<b>u</b>rring th<b>e</b> woods wh<b>e</b>re th<b>e</b> e<b>a</b>rth <b>i</b>s st<b>i</b>ll fr<b>e</b>sh <b>a</b>nd un<b>e</b>v<b>e</b>n. N<b>o</b>body com<b>e</b>s up th<b>e</b> grav<b>e</b>l driv<b>e</b>w<b>a</b>y <b>a</b>nymor<b>e</b>, <b>a</b>nd th<b>e</b> un<b>a</b>nsw<b>e</b>r<b>e</b>d l<b>e</b>tt<b>e</b>rs <b>a</b>r<b>e</b> pil<b>i</b>ng up by th<b>e</b> iron g<b>a</b>te. M<b>e</b>mory f<b>a</b>d<b>e</b>s, b<b>u</b>t th<b>e</b> st<b>a</b>ins b<b>e</b>n<b>e</b>ath th<b>e</b> rug r<b>e</b>fus<b>e</b> to w<b>a</b>sh aw<b>a</b>y.
-        </p>
+        <section class="console-log">
+            <div>&gt; BASE_RECOVERY_NODE: ONLINE</div>
+            <div>&gt; DECRYPT_MODULE_LOADED... SUCCESS</div>
+            <div>&gt; WARNING: LOG DATA CORRUPTED BY USER #4902</div>
+        </section>
 
-        <!-- Hidden hint visible only if the user highlights the page -->
-        <span class="hidden-hint">Look closely at what carries weight. Bold strokes carve the path. Regular strokes count the steps. Punctuation breaks the rhythm.</span>
+        <main>
+            <div class="intercepted-msg-box">
+                <h3>[ INTERCEPTED DATA TRANSMISSION ]</h3>
+                <p class="entry-text">
+                    <b>T</b>he old <b>h</b>ous<b>e</b> breathes differently <b>n</b>ow th<b>a</b>t the b<b>a</b>s<b>e</b>m<b>e</b>nt door <b>i</b>s loc<b>k</b>ed fr<b>e</b>m <b>t</b>he outsid<b>e</b>. R<b>a</b>in str<b>e</b>aks th<b>e</b> grime <b>o</b>n th<b>e</b> windows, bl<b>u</b>rring th<b>e</b> woods wh<b>e</b>re th<b>e</b> e<b>a</b>rth <b>i</b>s st<b>i</b>ll fr<b>e</b>sh <b>a</b>nd un<b>e</b>v<b>e</b>n. N<b>o</b>body com<b>e</b>s up th<b>e</b> grav<b>e</b>l driv<b>e</b>w<b>a</b>y <b>a</b>nymor<b>e</b>, <b>a</b>nd th<b>e</b> un<b>a</b>nsw<b>e</b>r<b>e</b>d l<b>e</b>tt<b>e</b>rs <b>a</b>r<b>e</b> pil<b>i</b>ng up by th<b>e</b> iron g<b>a</b>te. M<b>e</b>mory f<b>a</b>d<b>e</b>s, b<b>u</b>t th<b>e</b> st<b>a</b>ins b<b>e</b>n<b>e</b>ath th<b>e</b> rug r<b>e</b>fus<b>e</b> to w<b>a</b>sh aw<b>a</b>y.
+                </p>
+            </div>
 
-        <div class="secure-vault">
-            <h2>[ ENCRYPTED_MANIFEST.PDF ]</h2>
-            <p style="font-size: 0.85rem; color: #a3a8ae; margin-bottom: 15px;">
-                This file is locked with a 4-digit key. The key corresponds to the year the foundation of the estate cracked (Found in the Phase 2 GPS coordinates).
-            </p>
-            <form onsubmit="checkPassword(event)">
-                <input type="text" id="vault-key" placeholder="ENTER 4-DIGIT KEY..." maxlength="4">
-                <button type="submit">DECRYPT</button>
-            </form>
-            <p id="vault-output" style="font-size: 0.9rem; margin-top: 15px; color: #ff3333; font-weight: bold;"></p>
-        </div>
-    </main>
+            <span class="hidden-hint">SYSTEM EYE-STRAIN CALIBRATION: Highlight this section to scan hidden sub-layer frequencies. "Bold strokes carve the path. Regular strokes count the steps."</span>
 
-    <footer>
-        &copy; 1998-2026 ARCHIVE_ROOT // ALL RIGHTS RESERVED // "The truth decays slower than wood."
-    </footer>
+            <div class="decryption-chamber" id="chamber">
+                <h2>[ SECURE_MANIFEST_VAULT ]</h2>
+                <p style="font-size: 0.85rem; color: rgba(0, 255, 102, 0.7);">
+                    Security Check: Enter the 4-digit timeline anchor key to decrypt local file assets.
+                </p>
+                <form onsubmit="checkPassword(event)">
+                    <div class="input-group">
+                        <input type="text" id="vault-key" placeholder="AWAITING KEY..." maxlength="4" autocomplete="off">
+                        <button type="submit">EXECUTE</button>
+                    </div>
+                </form>
+                <div id="vault-output"></div>
+            </div>
+        </main>
+
+        <footer>
+            &copy; ARCHIVE_ROOT // TERMINAL SESSION LIVE // "The truth decays slower than wood."
+        </footer>
+    </div>
 
     <script>
         function checkPassword(e) {
             e.preventDefault();
             const input = document.getElementById('vault-key').value;
             const output = document.getElementById('vault-output');
+            const chamber = document.getElementById('chamber');
             
-            // Placeholder logic for the ARG continuation
-            if(input === "1924") { // Example key
-                output.style.color = "#00ff00";
-                output.innerHTML = "ACCESS GRANTED. Redirecting to audio log tape_04_recovery.wav...";
+            if(input === "1924") {
+                output.style.color = "#00ff66";
+                output.innerHTML = "> ACCESS GRANTED.<br>> Decryption sequence initiated...<br>> Redirecting to audio log: tape_04_recovery.wav";
+                chamber.classList.remove('error-state');
             } else {
                 output.style.color = "#ff3333";
-                output.innerHTML = "ERROR: DECRYPTION FAILED. INVALID KEY CHECKSUM.";
+                output.innerHTML = "> ERROR: DECRYPTION FAILED<br>> INVALID KEY CHECKSUM<br>> SYSTEM LOCKOUT IN PROGRESS";
+                chamber.classList.add('error-state');
             }
         }
     </script>
+
 </body>
 </html>
