@@ -320,8 +320,13 @@
             
             if(input === "1924") {
                 output.style.color = "#00ff66";
-                output.innerHTML = "> ACCESS GRANTED.<br>> Decryption sequence initiated...<br>> Redirecting to audio log: tape_04_recovery.wav";
+                output.innerHTML = "> ACCESS GRANTED.<br>> Decryption sequence initiated...<br>> Redirecting to Phase 2...";
                 chamber.classList.remove('error-state');
+                
+                // Redirect to step2.html after a short delay
+                setTimeout(() => {
+                    window.location.href = 'step2.html';
+                }, 2000);
             } else {
                 output.style.color = "#ff3333";
                 output.innerHTML = "> ERROR: DECRYPTION FAILED<br>> INVALID KEY CHECKSUM<br>> SYSTEM LOCKOUT IN PROGRESS";
