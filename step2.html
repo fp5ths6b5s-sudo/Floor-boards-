@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TERMINAL://LOCATION_TRACKER_v2.4</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+        :root {
+            --glow-color: #00ff66;
+            --alert-color: #ff3333;
+            --bg-color: #030704;
+            --terminal-bg: #07130b;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--glow-color);
+            font-family: 'Courier New', Courier, monospace;
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* CRT Scanline and Flicker Effects */
+        body::before {
+            content: " ";
+            display: block;
+            position: fixed;
+            top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            z-index: 9999;
+            background-size: 100% 4px, 3px 100%;
+            pointer-events: none;
+        }
+
+        body::after {
+            content: " ";
+            display: block;
+            position: fixed;
+            top: 0; left: 0; bottom: 0; right: 0;
+            background: rgba(18, 16, 16, 0.1);
+            opacity: 0;
+            z-index: 99999;
+            pointer-events: none;
+            animation: flicker 0.15s infinite;
+        }
+
+        @keyframes flicker {
+            0% { opacity: 0.27861; }
+            5% { opacity: 0.34769; }
+            10% { opacity: 0.23604; }
+            15% { opacity: 0.90626; }
+            20% { opacity: 0.18128; }
+            25% { opacity: 0.83891; }
+            30% { opacity: 0.65583; }
+            35% { opacity: 0.67807; }
+            40% { opacity: 0.26559; }
+            45% { opacity: 0.84693; }
+            50% { opacity: 0.96019; }
+            55% { opacity: 0.13594; }
+            60% { opacity: 0.88013; }
+            65% { opacity: 0.48425; }
+            70% { opacity: 0.16141; }
+            75% { opacity: 0.56508; }
+            80% { opacity: 0.61285; }
+            85% { opacity: 0.71775; }
+            90% { opacity: 0.86574; }
+            95% { opacity: 0.21105; }
+            100% { opacity: 0.56453; }
+        }
+
+        .terminal-container {
+            width: 100%;
+            max-width: 1000px;
+            background-color: var(--terminal-bg);
+            border: 2px solid var(--glow-color);
+            box-shadow: 0 0 20px rgba(0, 255, 102, 0.2), inset 0 0 15px rgba(0, 255, 102, 0.1);
+            padding: 30px;
+            border-radius: 0px;
+            position: relative;
+        }
+
+        header {
+            border-bottom: 2px solid var(--glow-color);
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .logo-area h1 {
+            font-size: 1.4rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            text-shadow: 0 0 5px var(--glow-color);
+        }
+
+        .sys-status {
+            font-size: 0.8rem;
+            background: rgba(0, 255, 102, 0.1);
+            padding: 4px 10px;
+            border: 1px solid var(--glow-color);
+            text-transform: uppercase;
+            animation: pulse 2s infinite;
+            border-radius: 0px;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.6; }
+            50% { opacity: 1; }
+            100% { opacity: 0.6; }
+        }
+
+        .console-log {
+            font-size: 0.85rem;
+            color: rgba(0, 255, 102, 0.7);
+            margin-bottom: 25px;
+            border-left: 3px solid rgba(0, 255, 102, 0.3);
+            padding-left: 15px;
+        }
+
+        .content-section {
+            background: rgba(0,0,0,0.4);
+            border: 1px dashed var(--glow-color);
+            padding: 20px;
+            border-radius: 0px;
+            margin-bottom: 30px;
+        }
+
+        .content-section h3 {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+            color: #fff;
+            letter-spacing: 1px;
+        }
+
+        .coordinates-box {
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid var(--alert-color);
+            padding: 15px;
+            margin: 15px 0;
+            font-size: 0.95rem;
+            color: var(--alert-color);
+            letter-spacing: 1px;
+        }
+
+        #map {
+            width: 100%;
+            height: 400px;
+            border: 1px solid var(--glow-color);
+            margin: 20px 0;
+            background-color: #000;
+        }
+
+        .clue-box {
+            background: rgba(255, 51, 51, 0.1);
+            border: 1px solid var(--alert-color);
+            padding: 15px;
+            margin: 15px 0;
+            font-size: 0.9rem;
+            color: #fff;
+        }
+
+        .clue-box .encoded {
+            color: var(--alert-color);
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        .instructions {
+            background: rgba(0, 255, 102, 0.05);
+            border-left: 3px solid var(--glow-color);
+            padding: 15px;
+            margin: 15px 0;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .hidden-data {
+            color: var(--terminal-bg);
+            user-select: none;
+        }
+
+        .hidden-data::selection {
+            background: var(--glow-color);
+            color: #000;
+        }
+
+        button {
+            background-color: var(--glow-color);
+            color: #000;
+            border: none;
+            padding: 12px 25px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95rem;
+            font-weight: bold;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: all 0.2s ease;
+            border-radius: 0px;
+            margin-top: 15px;
+        }
+
+        button:hover {
+            background-color: #fff;
+            box-shadow: 0 0 15px #fff;
+        }
+
+        footer {
+            text-align: center;
+            font-size: 0.75rem;
+            color: rgba(0, 255, 102, 0.4);
+            margin-top: 30px;
+            border-top: 1px solid rgba(0, 255, 102, 0.2);
+            padding-top: 15px;
+        }
+
+        .warning {
+            color: var(--alert-color);
+            font-weight: bold;
+            text-shadow: 0 0 5px var(--alert-color);
+        }
+
+        /* Leaflet overrides for terminal aesthetic */
+        .leaflet-control-zoom-in, .leaflet-control-zoom-out {
+            background-color: rgba(0, 255, 102, 0.1) !important;
+            border: 1px solid var(--glow-color) !important;
+            color: var(--glow-color) !important;
+            font-weight: bold !important;
+        }
+
+        .leaflet-control-zoom-in:hover, .leaflet-control-zoom-out:hover {
+            background-color: var(--glow-color) !important;
+            color: #000 !important;
+        }
+
+        .leaflet-popup-content-wrapper {
+            background-color: var(--terminal-bg) !important;
+            border: 1px solid var(--glow-color) !important;
+            color: var(--glow-color) !important;
+        }
+
+        .leaflet-popup-content {
+            color: var(--glow-color) !important;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="terminal-container">
+        <header>
+            <div class="logo-area">
+                <h1>LOCATION_TRACKER v2.4</h1>
+            </div>
+            <div class="sys-status">▲ SIGNAL ACQUIRED</div>
+        </header>
+
+        <section class="console-log">
+            <div>&gt; PHASE_2_INITIALIZED</div>
+            <div>&gt; GPS_TRIANGULATION... ACTIVE</div>
+            <div>&gt; ADDRESS_DATABASE... LOADED</div>
+            <div>&gt; WARNING: UNAUTHORIZED ACCESS DETECTED</div>
+        </section>
+
+        <main>
+            <!-- GPS COORDINATES SECTION -->
+            <div class="content-section">
+                <h3>[ PRIMARY COORDINATES ]</h3>
+                <p style="color: rgba(0, 255, 102, 0.8); margin-bottom: 10px;">Three locations converge. Find where they intersect.</p>
+                
+                <div class="coordinates-box">
+                    LOCATION ALPHA: 40.7128° N, 74.0060° W<br>
+                    LOCATION BETA: 34.0522° N, 118.2437° W<br>
+                    LOCATION GAMMA: 41.8781° N, 87.6298° W
+                </div>
+
+                <p style="color: rgba(0, 255, 102, 0.7); font-size: 0.85rem;">
+                    > These are not the final coordinates. They are markers. They guide you to something older.
+                </p>
+            </div>
+
+            <!-- INTERACTIVE MAP -->
+            <div class="content-section">
+                <h3>[ SATELLITE IMAGERY ]</h3>
+                <div id="map"></div>
+                <p style="color: rgba(0, 255, 102, 0.6); font-size: 0.85rem; margin-top: 10px;">
+                    > Three points marked. Three cities. But the house... the house is elsewhere.
+                </p>
+            </div>
+
+            <!-- ENCODED ADDRESS CLUES -->
+            <div class="content-section">
+                <h3>[ ENCRYPTED ADDRESS MANIFEST ]</h3>
+                
+                <div class="clue-box">
+                    <strong>CLUE 1 - ROT13 CIPHER:</strong><br>
+                    <div class="encoded">GUR BQYRE UBHFR FGNAQL BA GUR UVY, JURER GUR JBBQF ZRRG GUR FGEBAT</div>
+                    <span style="font-size: 0.8rem; color: rgba(0, 255, 102, 0.6);">Decode to reveal the estate's true name...</span>
+                </div>
+
+                <div class="clue-box">
+                    <strong>CLUE 2 - DECIMAL COORDINATES:</strong><br>
+                    <div class="encoded">42.3601° N | 71.0589° W</div>
+                    <span style="font-size: 0.8rem; color: rgba(0, 255, 102, 0.6);">What city claims this location? Cross-reference with Phase 1 data.</span>
+                </div>
+
+                <div class="clue-box">
+                    <strong>CLUE 3 - HIDDEN TEXT:</strong><br>
+                    <span class="hidden-data">THE FOUNDATION CRACKED IN 1924 // 247 BLACKWOOD LANE // COORDINATES: 42.3601° N 71.0589° W</span><br>
+                    <span style="font-size: 0.8rem; color: rgba(0, 255, 102, 0.6);">Highlight to reveal location metadata...</span>
+                </div>
+            </div>
+
+            <!-- INSTRUCTIONS -->
+            <div class="content-section">
+                <h3>[ TRACKING PROTOCOL ]</h3>
+                <div class="instructions">
+                    <strong>STEP 1:</strong> Decode the ROT13 cipher above to identify the estate.<br><br>
+                    <strong>STEP 2:</strong> Cross-reference the decimal coordinates with the map. Which major city do they lead to?<br><br>
+                    <strong>STEP 3:</strong> The address exists in your archive. Find it. Verify it. The year 1924 is significant—foundation damage was documented that year.<br><br>
+                    <strong>STEP 4:</strong> When you have the address, return to Phase 1. The 4-digit security key corresponds to the year mentioned in Phase 2.<br><br>
+                    <span class="warning">WARNING: Each false location attempt triggers a lockout timer. Choose wisely.</span>
+                </div>
+            </div>
+
+            <!-- NAVIGATION -->
+            <div style="text-align: center; margin-top: 30px;">
+                <a href="index.html" style="text-decoration: none;">
+                    <button>RETURN TO PHASE 1</button>
+                </a>
+            </div>
+        </main>
+
+        <footer>
+            &copy; ARCHIVE_ROOT // TRACKING ACTIVE // "Where the woods hide their secrets."
+        </footer>
+    </div>
+
+    <script>
+        // Initialize map with three locations
+        const map = L.map('map', {
+            center: [38.8, -95.5],
+            zoom: 4,
+            zoomControl: true
+        });
+
+        // Custom dark tile layer for terminal aesthetic
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+            attribution: '© OpenStreetMap',
+            maxZoom: 19
+        }).addTo(map);
+
+        // Define the three locations
+        const locations = [
+            {
+                name: "LOCATION ALPHA",
+                lat: 40.7128,
+                lng: -74.0060,
+                city: "NEW YORK"
+            },
+            {
+                name: "LOCATION BETA",
+                lat: 34.0522,
+                lng: -118.2437,
+                city: "LOS ANGELES"
+            },
+            {
+                name: "LOCATION GAMMA",
+                lat: 41.8781,
+                lng: -87.6298,
+                city: "CHICAGO"
+            }
+        ];
+
+        // Add markers and popups
+        locations.forEach((loc, idx) => {
+            const marker = L.circleMarker([loc.lat, loc.lng], {
+                radius: 8,
+                fillColor: '#00ff66',
+                color: '#00ff66',
+                weight: 2,
+                opacity: 0.8,
+                fillOpacity: 0.6
+            }).addTo(map);
+
+            marker.bindPopup(`<strong>${loc.name}</strong><br>${loc.city}<br>${loc.lat}° N, ${loc.lng}° W`);
+        });
+
+        // Add the true location (hidden clue)
+        const trueLocation = L.circleMarker([42.3601, -71.0589], {
+            radius: 10,
+            fillColor: '#ff3333',
+            color: '#ff3333',
+            weight: 3,
+            opacity: 0.7,
+            fillOpacity: 0.5
+        }).addTo(map);
+
+        trueLocation.bindPopup(`<strong>THE ESTATE</strong><br>BLACKWOOD LANE<br>42.3601° N, 71.0589° W`);
+    </script>
+
+</body>
+</html>
