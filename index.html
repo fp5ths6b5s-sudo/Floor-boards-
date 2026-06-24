@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Floorboards Archive - Day 1,402</title>
+    <style>
+        body {
+            background-color: #0b0c10;
+            color: #c5a880;
+            font-family: 'Courier New', Courier, monospace;
+            padding: 40px;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        header {
+            border-bottom: 1px dashed #45474a;
+            padding-bottom: 20px;
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            color: #660000;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin: 0 0 10px 0;
+        }
+
+        .meta {
+            font-size: 0.85rem;
+            color: #5c6166;
+        }
+
+        main {
+            background-color: #11141a;
+            padding: 30px;
+            border: 1px solid #1f232b;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            margin-bottom: 40px;
+        }
+
+        /* The Cipher Text */
+        /* Regular text elements represent DOTS (.) */
+        /* Bold text elements represent DASHES (-) */
+        p.entry-text {
+            font-size: 1.1rem;
+            color: #a3a8ae;
+            text-align: justify;
+            word-spacing: 2px;
+        }
+
+        /* Password Section */
+        .secure-vault {
+            border: 1px solid #660000;
+            background-color: #1a0d0d;
+            padding: 20px;
+            margin-top: 50px;
+        }
+
+        .secure-vault h2 {
+            font-size: 1rem;
+            color: #ff3333;
+            margin-top: 0;
+            text-transform: uppercase;
+        }
+
+        input[type="text"] {
+            background-color: #0b0c10;
+            border: 1px solid #45474a;
+            color: #ff3333;
+            padding: 10px;
+            font-family: 'Courier New', monospace;
+            width: 70%;
+            max-width: 300px;
+        }
+
+        button {
+            background-color: #660000;
+            color: #ffffff;
+            border: none;
+            padding: 10px 20px;
+            font-family: 'Courier New', monospace;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #990000;
+        }
+
+        footer {
+            text-align: center;
+            font-size: 0.75rem;
+            color: #383c42;
+            margin-top: 60px;
+            border-top: 1px solid #1f232b;
+            padding-top: 20px;
+        }
+
+        .hidden-hint {
+            color: #11141a; /* Matches background to stay hidden unless highlighted */
+            user-select: none;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>FLOORBOARDS_ARCHIVE_07</h1>
+        <div class="meta">SYSTEM STATUS: UNATTENDED // LAST LOGIN: 274 DAYS AGO // ARCHIVIST ID: #4902</div>
+    </header>
+
+    <main>
+        <div class="meta" style="margin-bottom: 15px;">POSTED: Day 1,402 - Maintenance Completed</div>
+        
+        <!-- The cipher is embedded directly into the font styles below -->
+        <p class="entry-text">
+            <b>T</b>he old <b>h</b>ous<b>e</b> breathes differently <b>n</b>ow th<b>a</b>t the b<b>a</b>s<b>e</b>m<b>e</b>nt door <b>i</b>s loc<b>k</b>ed fr<b>o</b>m <b>t</b>he outsid<b>e</b>. R<b>a</b>in str<b>e</b>aks th<b>e</b> grime <b>o</b>n th<b>e</b> windows, bl<b>u</b>rring th<b>e</b> woods wh<b>e</b>re th<b>e</b> e<b>a</b>rth <b>i</b>s st<b>i</b>ll fr<b>e</b>sh <b>a</b>nd un<b>e</b>v<b>e</b>n. N<b>o</b>body com<b>e</b>s up th<b>e</b> grav<b>e</b>l driv<b>e</b>w<b>a</b>y <b>a</b>nymor<b>e</b>, <b>a</b>nd th<b>e</b> un<b>a</b>nsw<b>e</b>r<b>e</b>d l<b>e</b>tt<b>e</b>rs <b>a</b>r<b>e</b> pil<b>i</b>ng up by th<b>e</b> iron g<b>a</b>te. M<b>e</b>mory f<b>a</b>d<b>e</b>s, b<b>u</b>t th<b>e</b> st<b>a</b>ins b<b>e</b>n<b>e</b>ath th<b>e</b> rug r<b>e</b>fus<b>e</b> to w<b>a</b>sh aw<b>a</b>y.
+        </p>
+
+        <!-- Hidden hint visible only if the user highlights the page -->
+        <span class="hidden-hint">Look closely at what carries weight. Bold strokes carve the path. Regular strokes count the steps. Punctuation breaks the rhythm.</span>
+
+        <div class="secure-vault">
+            <h2>[ ENCRYPTED_MANIFEST.PDF ]</h2>
+            <p style="font-size: 0.85rem; color: #a3a8ae; margin-bottom: 15px;">
+                This file is locked with a 4-digit key. The key corresponds to the year the foundation of the estate cracked (Found in the Phase 2 GPS coordinates).
+            </p>
+            <form onsubmit="checkPassword(event)">
+                <input type="text" id="vault-key" placeholder="ENTER 4-DIGIT KEY..." maxlength="4">
+                <button type="submit">DECRYPT</button>
+            </form>
+            <p id="vault-output" style="font-size: 0.9rem; margin-top: 15px; color: #ff3333; font-weight: bold;"></p>
+        </div>
+    </main>
+
+    <footer>
+        &copy; 1998-2026 ARCHIVE_ROOT // ALL RIGHTS RESERVED // "The truth decays slower than wood."
+    </footer>
+
+    <script>
+        function checkPassword(e) {
+            e.preventDefault();
+            const input = document.getElementById('vault-key').value;
+            const output = document.getElementById('vault-output');
+            
+            // Placeholder logic for the ARG continuation
+            if(input === "1924") { // Example key
+                output.style.color = "#00ff00";
+                output.innerHTML = "ACCESS GRANTED. Redirecting to audio log tape_04_recovery.wav...";
+            } else {
+                output.style.color = "#ff3333";
+                output.innerHTML = "ERROR: DECRYPTION FAILED. INVALID KEY CHECKSUM.";
+            }
+        }
+    </script>
+</body>
+</html>
