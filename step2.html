@@ -152,12 +152,13 @@
 
         .coordinates-box {
             background: rgba(0, 0, 0, 0.6);
-            border: 1px solid var(--alert-color);
+            border: 1px solid var(--glow-color);
             padding: 15px;
             margin: 15px 0;
             font-size: 0.95rem;
-            color: var(--alert-color);
+            color: var(--glow-color);
             letter-spacing: 1px;
+            line-height: 1.8;
         }
 
         #map {
@@ -177,10 +178,11 @@
             color: #fff;
         }
 
-        .clue-box .encoded {
-            color: var(--alert-color);
+        .clue-box .answer {
+            color: var(--glow-color);
             font-weight: bold;
             margin: 10px 0;
+            font-size: 1.1rem;
         }
 
         .instructions {
@@ -190,16 +192,6 @@
             margin: 15px 0;
             font-size: 0.9rem;
             line-height: 1.6;
-        }
-
-        .hidden-data {
-            color: var(--terminal-bg);
-            user-select: none;
-        }
-
-        .hidden-data::selection {
-            background: var(--glow-color);
-            color: #000;
         }
 
         button {
@@ -279,19 +271,23 @@
         </section>
 
         <main>
-            <!-- GPS COORDINATES SECTION -->
+            <!-- THE ESTATE LOCATION -->
             <div class="content-section">
-                <h3>[ PRIMARY COORDINATES ]</h3>
-                <p style="color: rgba(0, 255, 102, 0.8); margin-bottom: 10px;">Three locations converge. Find where they intersect.</p>
+                <h3>[ THE ESTATE - DIRECT COORDINATES ]</h3>
+                <p style="color: rgba(0, 255, 102, 0.8); margin-bottom: 15px;">
+                    The house has been located. These are the exact coordinates where the floorboards cracked.
+                </p>
                 
                 <div class="coordinates-box">
-                    LOCATION ALPHA: 40.7128° N, 74.0060° W<br>
-                    LOCATION BETA: 34.0522° N, 118.2437° W<br>
-                    LOCATION GAMMA: 41.8781° N, 87.6298° W
+                    <strong>LATITUDE:</strong> 42.3601° N<br>
+                    <strong>LONGITUDE:</strong> 71.0589° W<br>
+                    <strong>ADDRESS:</strong> 247 Blackwood Lane<br>
+                    <strong>CITY:</strong> Boston, Massachusetts<br>
+                    <strong>YEAR FOUNDATION CRACKED:</strong> 1924
                 </div>
 
-                <p style="color: rgba(0, 255, 102, 0.7); font-size: 0.85rem;">
-                    > These are not the final coordinates. They are markers. They guide you to something older.
+                <p style="color: rgba(0, 255, 102, 0.6); font-size: 0.85rem; margin-top: 15px;">
+                    > The coordinates point to the old estate. The foundation damage was documented in 1924. This is where it began.
                 </p>
             </div>
 
@@ -300,42 +296,41 @@
                 <h3>[ SATELLITE IMAGERY ]</h3>
                 <div id="map"></div>
                 <p style="color: rgba(0, 255, 102, 0.6); font-size: 0.85rem; margin-top: 10px;">
-                    > Three points marked. Three cities. But the house... the house is elsewhere.
+                    > Red marker indicates the estate location. The old house. The locked basement. The beginning.
                 </p>
             </div>
 
-            <!-- ENCODED ADDRESS CLUES -->
+            <!-- SIMPLE CLUES -->
             <div class="content-section">
-                <h3>[ ENCRYPTED ADDRESS MANIFEST ]</h3>
+                <h3>[ LOCATION CLUES - SIMPLIFIED ]</h3>
                 
                 <div class="clue-box">
-                    <strong>CLUE 1 - ROT13 CIPHER:</strong><br>
-                    <div class="encoded">GUR BQYRE UBHFR FGNAQL BA GUR UVY, JURER GUR JBBQF ZRRG GUR FGEBAT</div>
-                    <span style="font-size: 0.8rem; color: rgba(0, 255, 102, 0.6);">Decode to reveal the estate's true name...</span>
+                    <strong>CLUE 1:</strong> What city contains coordinates 42.3601° N, 71.0589° W?<br>
+                    <div class="answer">ANSWER: BOSTON</div>
                 </div>
 
                 <div class="clue-box">
-                    <strong>CLUE 2 - DECIMAL COORDINATES:</strong><br>
-                    <div class="encoded">42.3601° N | 71.0589° W</div>
-                    <span style="font-size: 0.8rem; color: rgba(0, 255, 102, 0.6);">What city claims this location? Cross-reference with Phase 1 data.</span>
+                    <strong>CLUE 2:</strong> What street name appears in the archive records?<br>
+                    <div class="answer">ANSWER: BLACKWOOD LANE</div>
                 </div>
 
                 <div class="clue-box">
-                    <strong>CLUE 3 - HIDDEN TEXT:</strong><br>
-                    <span class="hidden-data">THE FOUNDATION CRACKED IN 1924 // 247 BLACKWOOD LANE // COORDINATES: 42.3601° N 71.0589° W</span><br>
-                    <span style="font-size: 0.8rem; color: rgba(0, 255, 102, 0.6);">Highlight to reveal location metadata...</span>
+                    <strong>CLUE 3:</strong> What year did the foundation crack at this estate?<br>
+                    <div class="answer">ANSWER: 1924</div>
+                </div>
+
+                <div class="clue-box">
+                    <strong>CLUE 4:</strong> What is the complete street address?<br>
+                    <div class="answer">ANSWER: 247 BLACKWOOD LANE, BOSTON, MA</div>
                 </div>
             </div>
 
             <!-- INSTRUCTIONS -->
             <div class="content-section">
-                <h3>[ TRACKING PROTOCOL ]</h3>
+                <h3>[ PHASE 2 COMPLETE ]</h3>
                 <div class="instructions">
-                    <strong>STEP 1:</strong> Decode the ROT13 cipher above to identify the estate.<br><br>
-                    <strong>STEP 2:</strong> Cross-reference the decimal coordinates with the map. Which major city do they lead to?<br><br>
-                    <strong>STEP 3:</strong> The address exists in your archive. Find it. Verify it. The year 1924 is significant—foundation damage was documented that year.<br><br>
-                    <strong>STEP 4:</strong> When you have the address, return to Phase 1. The 4-digit security key corresponds to the year mentioned in Phase 2.<br><br>
-                    <span class="warning">WARNING: Each false location attempt triggers a lockout timer. Choose wisely.</span>
+                    You now know the location. The estate exists. The coordinates are verified. The foundation cracked in 1924—the year that unlocks everything.<br><br>
+                    <span class="warning">Return to Phase 1 with this knowledge. The key you need is already visible.</span>
                 </div>
             </div>
 
@@ -353,10 +348,10 @@
     </div>
 
     <script>
-        // Initialize map with three locations
+        // Initialize map with the estate location
         const map = L.map('map', {
-            center: [38.8, -95.5],
-            zoom: 4,
+            center: [42.3601, -71.0589],
+            zoom: 15,
             zoomControl: true
         });
 
@@ -366,53 +361,18 @@
             maxZoom: 19
         }).addTo(map);
 
-        // Define the three locations
-        const locations = [
-            {
-                name: "LOCATION ALPHA",
-                lat: 40.7128,
-                lng: -74.0060,
-                city: "NEW YORK"
-            },
-            {
-                name: "LOCATION BETA",
-                lat: 34.0522,
-                lng: -118.2437,
-                city: "LOS ANGELES"
-            },
-            {
-                name: "LOCATION GAMMA",
-                lat: 41.8781,
-                lng: -87.6298,
-                city: "CHICAGO"
-            }
-        ];
-
-        // Add markers and popups
-        locations.forEach((loc, idx) => {
-            const marker = L.circleMarker([loc.lat, loc.lng], {
-                radius: 8,
-                fillColor: '#00ff66',
-                color: '#00ff66',
-                weight: 2,
-                opacity: 0.8,
-                fillOpacity: 0.6
-            }).addTo(map);
-
-            marker.bindPopup(`<strong>${loc.name}</strong><br>${loc.city}<br>${loc.lat}° N, ${loc.lng}° W`);
-        });
-
-        // Add the true location (hidden clue)
-        const trueLocation = L.circleMarker([42.3601, -71.0589], {
-            radius: 10,
+        // Add marker for the estate
+        const marker = L.circleMarker([42.3601, -71.0589], {
+            radius: 12,
             fillColor: '#ff3333',
             color: '#ff3333',
             weight: 3,
-            opacity: 0.7,
-            fillOpacity: 0.5
+            opacity: 0.8,
+            fillOpacity: 0.6
         }).addTo(map);
 
-        trueLocation.bindPopup(`<strong>THE ESTATE</strong><br>BLACKWOOD LANE<br>42.3601° N, 71.0589° W`);
+        marker.bindPopup(`<strong>THE ESTATE</strong><br>247 Blackwood Lane<br>Boston, MA<br>42.3601° N, 71.0589° W`);
+        marker.openPopup();
     </script>
 
 </body>
