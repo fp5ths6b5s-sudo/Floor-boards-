@@ -10,6 +10,7 @@
             --alert-color: #ff3333;
             --bg-color: #030704;
             --terminal-bg: #07130b;
+            --blood-red: #8b0000;
         }
 
         * {
@@ -79,13 +80,22 @@
             100% { opacity: 0.56453; }
         }
 
+        @keyframes glitch {
+            0% { text-shadow: 2px 0 #ff3333, -2px 0 var(--glow-color); }
+            20% { text-shadow: -2px 0 #ff3333, 2px 0 var(--glow-color); }
+            40% { text-shadow: 2px 0 #ff3333, -2px 0 var(--glow-color); }
+            60% { text-shadow: -2px 0 #ff3333, 2px 0 var(--glow-color); }
+            80% { text-shadow: 2px 0 #ff3333, -2px 0 var(--glow-color); }
+            100% { text-shadow: -2px 0 #ff3333, 2px 0 var(--glow-color); }
+        }
+
         /* Main Terminal Wrapper */
         .terminal-container {
             width: 100%;
             max-width: 900px;
             background-color: var(--terminal-bg);
-            border: 2px solid var(--glow-color);
-            box-shadow: 0 0 20px rgba(0, 255, 102, 0.2), inset 0 0 15px rgba(0, 255, 102, 0.1);
+            border: 3px solid var(--glow-color);
+            box-shadow: 0 0 30px rgba(0, 255, 102, 0.3), inset 0 0 20px rgba(0, 255, 102, 0.15), 0 0 60px rgba(139, 0, 0, 0.2);
             padding: 30px;
             border-radius: 0px;
             position: relative;
@@ -93,7 +103,7 @@
 
         /* Header Style */
         header {
-            border-bottom: 2px solid var(--glow-color);
+            border-bottom: 2px solid var(--blood-red);
             padding-bottom: 15px;
             margin-bottom: 25px;
             display: flex;
@@ -104,86 +114,100 @@
         }
 
         .logo-area h1 {
-            font-size: 1.4rem;
-            letter-spacing: 3px;
+            font-size: 1.5rem;
+            letter-spacing: 4px;
             text-transform: uppercase;
-            text-shadow: 0 0 5px var(--glow-color);
+            text-shadow: 0 0 10px var(--glow-color), 0 0 5px var(--blood-red);
+            animation: glitch 3s infinite;
         }
 
         .sys-status {
             font-size: 0.8rem;
-            background: rgba(0, 255, 102, 0.1);
-            padding: 4px 10px;
-            border: 1px solid var(--glow-color);
+            background: rgba(139, 0, 0, 0.2);
+            padding: 6px 12px;
+            border: 2px solid var(--blood-red);
             text-transform: uppercase;
-            animation: pulse 2s infinite;
+            animation: pulse 1.5s infinite;
             border-radius: 0px;
+            color: var(--blood-red);
+            font-weight: bold;
         }
 
         @keyframes pulse {
-            0% { opacity: 0.6; }
-            50% { opacity: 1; }
-            100% { opacity: 0.6; }
+            0% { opacity: 0.4; box-shadow: 0 0 5px var(--blood-red); }
+            50% { opacity: 1; box-shadow: 0 0 20px var(--blood-red); }
+            100% { opacity: 0.4; box-shadow: 0 0 5px var(--blood-red); }
         }
 
         /* Console Boot Log Grid */
         .console-log {
-            font-size: 0.85rem;
-            color: rgba(0, 255, 102, 0.7);
+            font-size: 0.8rem;
+            color: rgba(139, 0, 0, 0.9);
             margin-bottom: 25px;
-            border-left: 3px solid rgba(0, 255, 102, 0.3);
+            border-left: 3px solid var(--blood-red);
             padding-left: 15px;
+            line-height: 1.5;
+        }
+
+        .console-log div {
+            margin-bottom: 5px;
+            text-shadow: 0 0 5px rgba(139, 0, 0, 0.5);
         }
 
         /* The Cipher Content Block */
         .intercepted-msg-box {
-            background: rgba(0,0,0,0.4);
-            border: 1px dashed var(--glow-color);
-            padding: 20px;
+            background: rgba(139, 0, 0, 0.05);
+            border: 2px solid var(--blood-red);
+            padding: 25px;
             border-radius: 0px;
             margin-bottom: 30px;
+            box-shadow: inset 0 0 15px rgba(139, 0, 0, 0.1);
         }
 
         .intercepted-msg-box h3 {
-            font-size: 0.9rem;
+            font-size: 1rem;
             text-transform: uppercase;
-            margin-bottom: 10px;
-            color: #fff;
-            letter-spacing: 1px;
+            margin-bottom: 15px;
+            color: var(--blood-red);
+            letter-spacing: 2px;
+            text-shadow: 0 0 5px var(--blood-red);
         }
 
         p.entry-text {
             font-size: 1.05rem;
-            color: rgba(0, 255, 102, 0.9);
+            color: rgba(0, 255, 102, 0.85);
             text-align: justify;
-            line-height: 1.7;
+            line-height: 1.8;
         }
 
         p.entry-text b {
             color: #ffffff;
-            text-shadow: 0 0 8px #ffffff;
+            text-shadow: 0 0 10px #ffffff, 0 0 5px var(--blood-red);
             font-weight: bold;
         }
 
         /* Decryption Interface */
         .decryption-chamber {
-            border: 2px solid var(--glow-color);
-            background-color: rgba(0, 15, 5, 0.6);
+            border: 3px solid var(--glow-color);
+            background-color: rgba(0, 15, 5, 0.8);
             padding: 25px;
             border-radius: 0px;
             position: relative;
+            box-shadow: 0 0 20px rgba(0, 255, 102, 0.2), inset 0 0 10px rgba(0, 255, 102, 0.1);
         }
 
         .decryption-chamber.error-state {
             border-color: var(--alert-color);
+            box-shadow: 0 0 30px rgba(255, 51, 51, 0.4), inset 0 0 15px rgba(255, 51, 51, 0.2);
         }
 
         .decryption-chamber h2 {
-            font-size: 1rem;
-            color: #ffffff;
+            font-size: 1.1rem;
+            color: var(--glow-color);
             margin-bottom: 10px;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 2px;
+            text-shadow: 0 0 8px var(--glow-color);
         }
 
         .input-group {
@@ -195,7 +219,7 @@
 
         input[type="text"] {
             background-color: #000;
-            border: 1px solid var(--glow-color);
+            border: 2px solid var(--glow-color);
             color: var(--glow-color);
             padding: 12px;
             font-family: 'Courier New', monospace;
@@ -204,20 +228,20 @@
             min-width: 200px;
             outline: none;
             letter-spacing: 2px;
-            box-shadow: inset 0 0 5px rgba(0,255,102,0.3);
+            box-shadow: inset 0 0 8px rgba(0,255,102,0.3), 0 0 10px rgba(0,255,102,0.2);
             border-radius: 0px;
         }
 
         input[type="text"]:focus {
-            box-shadow: 0 0 10px var(--glow-color), inset 0 0 5px rgba(0,255,102,0.3);
+            box-shadow: 0 0 15px var(--glow-color), inset 0 0 8px rgba(0,255,102,0.4), 0 0 20px rgba(0,255,102,0.2);
             border-radius: 0px;
         }
 
         button {
             background-color: var(--glow-color);
             color: #000;
-            border: none;
-            padding: 0 25px;
+            border: 2px solid var(--glow-color);
+            padding: 12px 30px;
             font-family: 'Courier New', monospace;
             font-size: 1rem;
             font-weight: bold;
@@ -226,27 +250,30 @@
             transition: all 0.2s ease;
             min-height: 48px;
             border-radius: 0px;
+            box-shadow: 0 0 10px rgba(0,255,102,0.3);
         }
 
         button:hover {
             background-color: #fff;
-            box-shadow: 0 0 15px #fff;
+            box-shadow: 0 0 20px #fff, 0 0 30px var(--glow-color);
+            transform: scale(1.05);
         }
 
         #vault-output {
             margin-top: 20px;
             font-size: 0.95rem;
-            line-height: 1.5;
+            line-height: 1.6;
             min-height: 20px;
+            text-shadow: 0 0 8px currentColor;
         }
 
         /* Footnotes */
         footer {
             text-align: center;
             font-size: 0.75rem;
-            color: rgba(0, 255, 102, 0.4);
+            color: rgba(139, 0, 0, 0.6);
             margin-top: 30px;
-            border-top: 1px solid rgba(0, 255, 102, 0.2);
+            border-top: 1px solid rgba(139, 0, 0, 0.3);
             padding-top: 15px;
         }
 
@@ -260,8 +287,14 @@
         }
         
         .hidden-hint::selection {
-            background: var(--glow-color);
-            color: #000;
+            background: var(--blood-red);
+            color: #fff;
+        }
+
+        .warning-text {
+            color: var(--alert-color);
+            text-shadow: 0 0 10px var(--alert-color);
+            font-weight: bold;
         }
     </style>
 </head>
@@ -270,36 +303,43 @@
     <div class="terminal-container">
         <header>
             <div class="logo-area">
-                <h1>Floorboards_OS v4.92</h1>
+                <h1>FLOORBOARDS_OS v4.92</h1>
             </div>
-            <div class="sys-status">▲ TERMINAL INTRUSION DETECTED</div>
+            <div class="sys-status">▲ CRITICAL INTRUSION</div>
         </header>
 
         <section class="console-log">
-            <div>&gt; BASE_RECOVERY_NODE: ONLINE</div>
-            <div>&gt; DECRYPT_MODULE_LOADED... SUCCESS</div>
-            <div>&gt; WARNING: LOG DATA CORRUPTED BY USER #4902</div>
+            <div>&gt; RECOVERY_SEQUENCE_INITIATED... 1924</div>
+            <div>&gt; ARCHIVE_CORRUPTED_BY_USER#4902... ACCESSING</div>
+            <div>&gt; WARNING: UNAUTHORIZED_ENTRY_LOGGED</div>
+            <div>&gt; BASEMENT_ACCESS_RESTRICTED... LOCKED_FROM_OUTSIDE</div>
+            <div>&gt; LAST_MAINTENANCE_UPDATE: 274_DAYS_AGO</div>
+            <div>&gt; SYSTEM_STATUS: DECAYING... UNATTENDED... ALONE</div>
         </section>
 
         <main>
             <div class="intercepted-msg-box">
-                <h3>[ INTERCEPTED DATA TRANSMISSION ]</h3>
+                <h3>[ INTERCEPTED TRANSMISSION - DAYLOG ENTRY #1402 ]</h3>
+                <p style="color: rgba(0, 255, 102, 0.6); font-size: 0.8rem; margin-bottom: 15px;">
+                    TIMESTAMP: UNKNOWN // ARCHIVIST_ID: #4902 // STATUS: MISSING_SINCE_DAY_1203
+                </p>
                 <p class="entry-text">
-                    <b>T</b>he old <b>h</b>ous<b>e</b> breathes differently <b>n</b>ow th<b>a</b>t the b<b>a</b>s<b>e</b>m<b>e</b>nt door <b>i</b>s loc<b>k</b>ed fr<b>e</b>m <b>t</b>he outsid<b>e</b>. R<b>a</b>in str<b>e</b>aks th<b>e</b> grime <b>o</b>n th<b>e</b> windows, bl<b>u</b>rring th<b>e</b> woods wh<b>e</b>re th<b>e</b> e<b>a</b>rth <b>i</b>s st<b>i</b>ll fr<b>e</b>sh <b>a</b>nd un<b>e</b>v<b>e</b>n. N<b>o</b>body com<b>e</b>s up th<b>e</b> grav<b>e</b>l driv<b>e</b>w<b>a</b>y <b>a</b>nymor<b>e</b>, <b>a</b>nd th<b>e</b> un<b>a</b>nsw<b>e</b>r<b>e</b>d l<b>e</b>tt<b>e</b>rs <b>a</b>r<b>e</b> pil<b>i</b>ng up by th<b>e</b> iron g<b>a</b>te. M<b>e</b>mory f<b>a</b>d<b>e</b>s, b<b>u</b>t th<b>e</b> st<b>a</b>ins b<b>e</b>n<b>e</b>ath th<b>e</b> rug r<b>e</b>fus<b>e</b> to w<b>a</b>sh aw<b>a</b>y.
+                    <b>T</b>he old <b>h</b>ous<b>e</b> breathes differently <b>n</b>ow th<b>a</b>t the b<b>a</b>s<b>e</b>m<b>e</b>nt door <b>i</b>s loc<b>k</b>ed fr<b>e</b>m <b>t</b>he outsid<b>e</b>. R<b>a</b>in str<b>e</b>aks th<b>e</b> grime <b>o</b>n th<b>e</b> windows, bl<b>u</b>rring th<b>e</b> woods wh<b>e</b>re th<b>e</b> e<b>a</b>rth <b>i</b>s st<b>i</b>ll fr<b>e</b>sh <b>a</b>nd un<b>e</b>v<b>e</b>n fr<b>o</b>m th<b>e</b> digging. N<b>o</b>body com<b>e</b>s up th<b>e</b> grav<b>e</b>l driv<b>e</b>w<b>a</b>y <b>a</b>nymor<b>e</b>. Th<b>e</b> un<b>a</b>nsw<b>e</b>r<b>e</b>d l<b>e</b>tt<b>e</b>rs <b>a</b>r<b>e</b> pil<b>i</b>ng up by th<b>e</b> iron g<b>a</b>te, th<b>e</b> ink f<b>a</b>ding in th<b>e</b> d<b>a</b>mp. M<b>e</b>mory f<b>a</b>d<b>e</b>s, <b>b</b>ut th<b>e</b> st<b>a</b>ins b<b>e</b>n<b>e</b>ath th<b>e</b> rug r<b>e</b>fus<b>e</b> to w<b>a</b>sh <b>a</b>w<b>a</b>y. Th<b>e</b>y grow d<b>e</b>ep<b>e</b>r <b>e</b>ach m<b>o</b>nth. Th<b>e</b> floorboards <b>c</b>racked in 1924 wh<b>e</b>n th<b>e</b> b<b>o</b>dy w<b>a</b>s <b>b</b>uri<b>e</b>d d<b>e</b>ep b<b>e</b>low. N<b>o</b>w som<b>e</b>thing g<b>r</b>ows fr<b>o</b>m th<b>a</b>t ground, up through th<b>e</b> wood, through th<b>e</b> walls. I c<b>a</b>n h<b>e</b>ar it scr<b>a</b>ping. I c<b>a</b>n s<b>m</b>ell it c<b>o</b>ming.
                 </p>
             </div>
 
-            <span class="hidden-hint">SYSTEM EYE-STRAIN CALIBRATION: Highlight this section to scan hidden sub-layer frequencies. "Bold strokes carve the path. Regular strokes count the steps."</span>
+            <span class="hidden-hint">DECRYPT_HINT: Highlight to reveal morse code pattern. Bold = DASH (-) // Regular = DOT (.) // Find what was buried in 1924.</span>
 
             <div class="decryption-chamber" id="chamber">
-                <h2>[ SECURE_MANIFEST_VAULT ]</h2>
-                <p style="font-size: 0.85rem; color: rgba(0, 255, 102, 0.7);">
-                    Security Check: Enter the 4-digit timeline anchor key to decrypt local file assets.
+                <h2>[ VAULT_ENCRYPTION_PROTOCOL_v7 ]</h2>
+                <p style="font-size: 0.85rem; color: rgba(0, 255, 102, 0.7); margin-bottom: 15px;">
+                    Enter the 4-digit timeline anchor to access Phase 2 archives.<br>
+                    <span class="warning-text">⚠ WARNING: Multiple failed attempts will trigger lockdown.</span>
                 </p>
                 <form onsubmit="checkPassword(event)">
                     <div class="input-group">
-                        <input type="text" id="vault-key" placeholder="AWAITING KEY..." maxlength="4" autocomplete="off">
-                        <button type="submit">EXECUTE</button>
+                        <input type="text" id="vault-key" placeholder="AWAITING_SECURITY_KEY..." maxlength="4" autocomplete="off">
+                        <button type="submit">DECRYPT</button>
                     </div>
                 </form>
                 <div id="vault-output"></div>
@@ -307,29 +347,41 @@
         </main>
 
         <footer>
-            &copy; ARCHIVE_ROOT // TERMINAL SESSION LIVE // "The truth decays slower than wood."
+            &copy; 1998-2026 ARCHIVE_ROOT // SYSTEM_COMPROMISED // "The truth does not decay. It spreads."
         </footer>
     </div>
 
     <script>
+        let attemptCount = 0;
+
         function checkPassword(e) {
             e.preventDefault();
             const input = document.getElementById('vault-key').value;
             const output = document.getElementById('vault-output');
             const chamber = document.getElementById('chamber');
+            attemptCount++;
             
             if(input === "1924") {
                 output.style.color = "#00ff66";
-                output.innerHTML = "> ACCESS GRANTED.<br>> Decryption sequence initiated...<br>> Redirecting to Phase 2...";
+                output.innerHTML = "> ENCRYPTION_BYPASSED<br>> FOUNDATION_YEAR_VERIFIED<br>> PHASE_2_ARCHIVE_UNLOCKING<br>> > > REDIRECTING_TO_LOCATION_TRACKER...";
                 chamber.classList.remove('error-state');
                 
-                // Redirect to step2.html after a short delay
                 setTimeout(() => {
                     window.location.href = 'step2.html';
-                }, 2000);
+                }, 2500);
             } else {
                 output.style.color = "#ff3333";
-                output.innerHTML = "> ERROR: DECRYPTION FAILED<br>> INVALID KEY CHECKSUM<br>> SYSTEM LOCKOUT IN PROGRESS";
+                if(attemptCount === 1) {
+                    output.innerHTML = "> DECRYPTION_FAILED<br>> INVALID_CHECKSUM<br>> ATTEMPT_1_OF_3";
+                } else if(attemptCount === 2) {
+                    output.innerHTML = "> DECRYPTION_FAILED<br>> INVALID_CHECKSUM<br>> ATTEMPT_2_OF_3<br>> WARNING: FINAL_ATTEMPT_REMAINING";
+                } else {
+                    output.innerHTML = "> DECRYPTION_FAILED<br>> INVALID_CHECKSUM<br>> SYSTEM_LOCKDOWN_INITIATED<br>> >> AUTHORITIES_NOTIFIED";
+                    chamber.style.pointerEvents = 'none';
+                    chamber.style.opacity = '0.5';
+                    document.getElementById('vault-key').disabled = true;
+                    document.querySelector('button').disabled = true;
+                }
                 chamber.classList.add('error-state');
             }
         }
